@@ -40,3 +40,8 @@ const addToList = id => {
       $('#packing-list').prepend(content);
     });
 };
+
+$('#packing-list').click((event) => {
+  console.log('listUpdater clicked');
+  
+})

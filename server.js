@@ -80,7 +80,7 @@ app.patch('/api/v1/items/:id', (request, response) => {
   const { id } = request.params;
   const { packed } = request.body;
 
-  db('list')
+  database('list')
     .where('id', id)
     .update({
       packed

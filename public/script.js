@@ -78,8 +78,24 @@ $('#packing-list').click((event) => {
     })
   }
   if (event.target.id === 'packed') {
-    console.log('packed toggled');
-    
+    const itemID = event.target.closest('article').id
+    const packedValue = event.target.value === 'false'? true:false
+    fetch(`/api/v1/items/${itemID}` , {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        packed: !packedValue
+      })
+      .then(response => response.json())
+      .then(update => {
+        packed = packedValue
+      })
+      .catch(err => {
+        throw err;
+      })
+    })
   }
   
 })

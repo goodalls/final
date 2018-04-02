@@ -76,6 +76,26 @@ app.delete('/api/v1/items/:id', (request, response) => {
   })
 })
 
+app.patch('/api/v1/items/:id', checkAuth, (request, response) => {
+  const { id } = request.params;
+  const { packed } = request.body;
+
+  db('list')
+    .where('id', id)
+    .update({
+      packed
+    })
+    .then(updated => {
+      if (!updated) {
+        return response.status(422).json({ error: 'unable to update item' });
+      }
+      response.status(200).json('Record successfully updated');
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
 app.use((request, response) => {
   response.status(404).send('Sorry can\'t find that!');
 });

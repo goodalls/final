@@ -1,0 +1,30 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: grey;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+header {
+  height: 100px;
+  margin: 0 auto;
+  background-color: darkgrey;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 1.5em;
+  font-weight: 700
+}
+
+control {
+  margin: 10px auto;
+}
+
+content {
+  margin: 10px auto;
+}

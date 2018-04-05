@@ -69,6 +69,9 @@ app.delete('/api/v1/items/:id', (request, response) => {
   .where('id', id)
   .del()
   .then(item => {
+    if (!item) {
+      return response.status(404).json({ error: 'item requested not found' });
+    }
     response.status(200).json(item);
   })
   .catch(error => {

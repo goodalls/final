@@ -93,14 +93,13 @@ describe('API Routes', () => {
       it('should create a new item', () => {
         return chai
         .request(server)
-        .post('/api/v1/items')
+        .post('/api/v1/items/')
         .send({
-          "name": "beacon of truth",
-          "packed": "false"
+          name: "beacon of truth",
+          packed: "false"
         })
         .then(response => {
           expect(response).to.have.status(201);
-          expect(response.body).to.be(object);
           expect(response.body).to.have.property('id');
           expect(response.body.id).to.equal(4);
         })
@@ -108,7 +107,28 @@ describe('API Routes', () => {
           throw err;
         })
       });
+      it('should return 422 if missing an required property', () => {
+        return chai
+        .request(server)
+        .post('/api/v1/items')
+        .send({
+          // name: "beacon of truth",
+          packed: "false"
+        })
+        .then(response => {
+          expect(response).to.have.status(422);
+          expect(response).to.be.json;
+          expect(response.body).to.be.a('object');
+          expect(response.body.error).to.equal(
+            `Expected format: { name: <string>, packed: <boolean> } You're missing the "name" property`
+          );
+        })
+        .catch(err => {
+          throw err;
+        });
+      });
     })
+
 
     describe('DELETE /api/v1/items/:id', () => {
       it('should delete a item', () => {
@@ -119,6 +139,14 @@ describe('API Routes', () => {
             expect(response).to.have.status(200);
             expect(response.body).to.equal(1);
           });
+      });
+      it('should have a sad path', () => {
+        return chai
+        .request(server)
+        .delete('/api/v1/items/2000')
+        .then(response => {
+          expect(response).to.have.status(404);
+        });
       });
     });
 

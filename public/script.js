@@ -28,7 +28,7 @@ const addToList = id => {
     .then(response => response.json())
     .then(item => {
       let { id, name, packed } = item[0];
-      const klass = packed == 'true' ? 'checked' : '';
+      const klass = JSON.parse(packed) ? 'checked' : '';
       let content = `
       <article id="${id}" class="card">
       <h4>${name}</h4>
@@ -48,7 +48,7 @@ window.onload = () => {
       items.forEach(item => {
         let { id, name, packed } = item;
         console.log(packed);
-        const klass = packed == 'true' ? 'checked' : '';
+        const klass = JSON.parse(packed) ? 'checked' : '';
         let content = `
         <article id="${id}" class="card">
         <h4>${name}</h4>
@@ -92,10 +92,6 @@ $('#packing-list').click(event => {
       })
     })
       .then(response => response.json())
-      .then(update => {
-        packed = packedValue;
-        //update packed to packedValue
-      })
       .catch(err => {
         throw err;
       });

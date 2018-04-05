@@ -77,6 +77,7 @@ $('#packing-list').click((event) => {
       throw err;
     })
   }
+
   if (event.target.id === 'packed') {
     const itemID = event.target.closest('article').id
     const packedValue = event.target.value === 'false'? true:false
@@ -86,8 +87,9 @@ $('#packing-list').click((event) => {
         'content-type': 'application/json'
       },
       body: JSON.stringify({
-        packed: !packedValue
+        packed: packedValue
       })
+    })
       .then(response => response.json())
       .then(update => {
         packed = packedValue
@@ -95,7 +97,5 @@ $('#packing-list').click((event) => {
       .catch(err => {
         throw err;
       })
-    })
-  }
-  
-})
+    }
+  });

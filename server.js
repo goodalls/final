@@ -86,8 +86,7 @@ app.patch('/api/v1/items/:id', (request, response) => {
       packed
     })
     .then(updated => {
-      console.log(updated);
-      
+      console.log(updated); //1
       if (!updated) {
         return response.status(422).json({ error: 'unable to update item' });
       }

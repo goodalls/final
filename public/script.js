@@ -47,11 +47,13 @@ window.onload = () => {
     .then(items => {
       items.forEach((item) => {
         let {id, name, packed} = item
+        console.log(packed);
+        const klass = packed == 'true'?'checked':'';
         let content = (`
         <article id="${id}" class="card">
         <h4>${name}</h4>
         <label for="packed">Packed</label> 
-        <input type="checkbox" value="${packed}" id="packed">
+        <input type="checkbox" value="${packed}" id="packed" ${klass}>
         <button id="delete">Delete</button>
         </article>
       `)
@@ -61,8 +63,8 @@ window.onload = () => {
 }
 
 $('#packing-list').click((event) => {
+  const itemID = event.target.closest('article').id
   if (event.target.id === 'delete') {
-    const itemID = event.target.closest('article').id
     fetch(`/api/v1/items/${itemID}` , {
       method: 'DELETE',
       headers: {
@@ -79,7 +81,6 @@ $('#packing-list').click((event) => {
   }
 
   if (event.target.id === 'packed') {
-    const itemID = event.target.closest('article').id
     const packedValue = event.target.value === 'false'? true:false
     fetch(`/api/v1/items/${itemID}` , {
       method: 'PATCH',
@@ -93,6 +94,7 @@ $('#packing-list').click((event) => {
       .then(response => response.json())
       .then(update => {
         packed = packedValue
+        //update packed to packedValue
       })
       .catch(err => {
         throw err;

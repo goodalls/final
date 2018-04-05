@@ -18,7 +18,8 @@ header {
 
 h1, h2{
   font-size: 1.5em;
-  font-weight: 700
+  font-weight: 700;
+  text-align: center;
 }
 
 control {
@@ -27,4 +28,31 @@ control {
 
 content {
   margin: 10px auto;
+}
+
+.card {
+  border: 2px solid black;
+  margin: 10px auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.card h4 {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
+
+.card input {
+  margin: 5px;
+  display: inline;
+}
+
+.card button {
+  margin: 5px;
+}
+
+#packing-list {
+  width: 100%;
 }

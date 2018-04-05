@@ -27,16 +27,16 @@ const addToList = id => {
   fetch(`/api/v1/items/${id.id}`)
     .then(response => response.json())
     .then(item => {
-      console.log(item[0]);
-      let {id, name, packed} = item[0]
-      let content = (`
+      let { id, name, packed } = item[0];
+      const klass = JSON.parse(packed) ? 'checked' : '';
+      let content = `
       <article id="${id}" class="card">
       <h4>${name}</h4>
       <label for="packed">Packed</label> 
-      <input type="checkbox" value="${packed}" id="packed">
+      <input type="checkbox" value="${packed}" id="packed" ${klass}>
       <button id="delete">Delete</button>
       </article>
-    `)
+    `;
       $('#packing-list').prepend(content);
     });
 };
@@ -45,57 +45,55 @@ window.onload = () => {
   fetch('/api/v1/items/')
     .then(response => response.json())
     .then(items => {
-      items.forEach((item) => {
-        let {id, name, packed} = item
-        let content = (`
+      items.forEach(item => {
+        let { id, name, packed } = item;
+        console.log(packed);
+        const klass = JSON.parse(packed) ? 'checked' : '';
+        let content = `
         <article id="${id}" class="card">
         <h4>${name}</h4>
         <label for="packed">Packed</label> 
-        <input type="checkbox" value="${packed}" id="packed">
+        <input type="checkbox" value="${packed}" id="packed" ${klass}>
         <button id="delete">Delete</button>
         </article>
-      `)
+      `;
         $('#packing-list').prepend(content);
-      })
-    }); 
-}
+      });
+    });
+};
 
-$('#packing-list').click((event) => {
+$('#packing-list').click(event => {
+  const itemID = event.target.closest('article').id;
   if (event.target.id === 'delete') {
-    const itemID = event.target.closest('article').id
-    fetch(`/api/v1/items/${itemID}` , {
+    fetch(`/api/v1/items/${itemID}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json'
       }
     })
-    .then(response => response.json())
-    .then(remove => {
-      event.target.closest('article').remove();
-    })
-    .catch(err => {
-      throw err;
-    })
+      .then(response => response.json())
+      .then(remove => {
+        event.target.closest('article').remove();
+      })
+      .catch(err => {
+        throw err;
+      });
   }
+
   if (event.target.id === 'packed') {
-    const itemID = event.target.closest('article').id
-    const packedValue = event.target.value === 'false'? true:false
-    fetch(`/api/v1/items/${itemID}` , {
+    const packedValue = event.target.value === 'false' ? true : false;
+    fetch(`/api/v1/items/${itemID}`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json'
       },
       body: JSON.stringify({
-        packed: !packedValue
-      })
-      .then(response => response.json())
-      .then(update => {
-        packed = packedValue
-      })
-      .catch(err => {
-        throw err;
+        packed: packedValue
       })
     })
+      .then(response => response.json())
+      .catch(err => {
+        throw err;
+      });
   }
-  
-})
+});
